@@ -1,5 +1,9 @@
 # Stock Images MCP
 
+<a href="https://glama.ai/mcp/servers/@jeanpfs/stock-images-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@jeanpfs/stock-images-mcp/badge" />
+</a>
+
 An MCP (Model Context Protocol) server for searching and downloading stock images from Pexels, Unsplash, and Pixabay.
 
 ## Features
