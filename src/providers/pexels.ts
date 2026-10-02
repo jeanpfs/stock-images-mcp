@@ -12,11 +12,7 @@ export class PexelsProvider implements Provider {
     return !!this.apiKey && this.apiKey.length > 0;
   }
 
-  async search(
-    query: string,
-    count: number,
-    orientation?: string
-  ): Promise<StockImage[]> {
+  async search(query: string, count: number, orientation?: string): Promise<StockImage[]> {
     if (!this.isConfigured()) {
       throw new Error("Pexels API key not configured");
     }
@@ -30,20 +26,17 @@ export class PexelsProvider implements Provider {
       params.set("orientation", orientation);
     }
 
-    const response = await fetch(
-      `https://api.pexels.com/v1/search?${params}`,
-      {
-        headers: {
-          Authorization: this.apiKey!,
-        },
-      }
-    );
+    const response = await fetch(`https://api.pexels.com/v1/search?${params}`, {
+      headers: {
+        Authorization: this.apiKey!,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Pexels API error: ${response.status}`);
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       photos: Array<{
         id: number;
         src: { original: string; medium: string };

@@ -20,7 +20,7 @@ describe("ProviderRegistry", () => {
     vi.stubEnv("PIXABAY_API_KEY", "test-key");
     const registry = new ProviderRegistry();
     const configured = registry.getConfiguredProviders();
-    expect(configured.map(p => p.name)).toEqual(["pexels", "pixabay"]);
+    expect(configured.map((p) => p.name)).toEqual(["pexels", "pixabay"]);
   });
 
   it("should report hasAnyConfigured correctly", () => {

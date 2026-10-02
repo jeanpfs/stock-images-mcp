@@ -12,11 +12,7 @@ export class UnsplashProvider implements Provider {
     return !!this.apiKey && this.apiKey.length > 0;
   }
 
-  async search(
-    query: string,
-    count: number,
-    orientation?: string
-  ): Promise<StockImage[]> {
+  async search(query: string, count: number, orientation?: string): Promise<StockImage[]> {
     if (!this.isConfigured()) {
       throw new Error("Unsplash API key not configured");
     }
@@ -30,14 +26,11 @@ export class UnsplashProvider implements Provider {
       params.set("orientation", orientation === "square" ? "squarish" : orientation);
     }
 
-    const response = await fetch(
-      `https://api.unsplash.com/search/photos?${params}`,
-      {
-        headers: {
-          Authorization: `Client-ID ${this.apiKey}`,
-        },
-      }
-    );
+    const response = await fetch(`https://api.unsplash.com/search/photos?${params}`, {
+      headers: {
+        Authorization: `Client-ID ${this.apiKey}`,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Unsplash API error: ${response.status}`);

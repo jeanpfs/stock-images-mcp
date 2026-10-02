@@ -53,6 +53,7 @@ docker run -e PEXELS_API_KEY=xxx stock-images-mcp
 Search for stock images across configured providers.
 
 **Parameters:**
+
 - `query` (required): Search term
 - `provider`: "pexels", "unsplash", "pixabay", or "all" (default: "all")
 - `count`: Number of results per provider (default: 5, max: 20)
@@ -63,11 +64,13 @@ Search for stock images across configured providers.
 Download an image into the download directory.
 
 **Parameters:**
+
 - `url` (required): `https` image URL on `pexels.com`, `unsplash.com` or `pixabay.com` (pass `downloadUrl` from `search_images`)
 - `filename`: Output filename — letters, digits, `_`, `-`, `.` only; extension added from the content-type if missing (auto-generated if omitted)
 - `folder`: Subfolder inside the download directory
 
 **Behavior and limits:**
+
 - Download directory is `./downloads`, or `STOCK_IMAGES_DOWNLOAD_DIR` if set. Paths that escape it (including via symlinks) are rejected.
 - Only `image/*` responses are saved; max 50 MiB; 30 s timeout; redirects are followed only to allowed hosts.
 - Existing files are never overwritten.

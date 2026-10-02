@@ -2,11 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import {
-  assertAllowedUrl,
-  createDownloadImageTool,
-  resolveFolder,
-} from "../download-image.js";
+import { assertAllowedUrl, createDownloadImageTool, resolveFolder } from "../download-image.js";
 
 const PNG: Uint8Array<ArrayBuffer> = new Uint8Array([0x89, 0x50, 0x4e, 0x47]);
 
@@ -41,7 +37,7 @@ describe("download_image", () => {
   const tool = createDownloadImageTool();
   const run = async (input: { url: string; filename?: string; folder?: string }) => {
     const res = await tool.handler(input);
-    return { res, body: JSON.parse(res.content[0].text) };
+    return { res, body: JSON.parse(res.content[0]!.text) };
   };
 
   beforeEach(() => {
@@ -150,9 +146,7 @@ describe("download_image", () => {
     vi.stubEnv("UNSPLASH_API_KEY", "k");
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(
-        Response.json({ url: "https://images.unsplash.com/photo-1" })
-      )
+      .mockResolvedValueOnce(Response.json({ url: "https://images.unsplash.com/photo-1" }))
       .mockResolvedValueOnce(imageResponse());
     vi.stubGlobal("fetch", fetchMock);
     const { body } = await run({
@@ -160,9 +154,9 @@ describe("download_image", () => {
       filename: "u.png",
     });
     expect(body.success).toBe(true);
-    const [firstUrl, firstInit] = fetchMock.mock.calls[0];
+    const [firstUrl, firstInit] = fetchMock.mock.calls[0]!;
     expect(String(firstUrl)).toContain("api.unsplash.com/photos/abc/download");
     expect(firstInit.headers.Authorization).toBe("Client-ID k");
-    expect(String(fetchMock.mock.calls[1][0])).toBe("https://images.unsplash.com/photo-1");
+    expect(String(fetchMock.mock.calls[1]![0])).toBe("https://images.unsplash.com/photo-1");
   });
 });

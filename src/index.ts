@@ -2,14 +2,11 @@
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 
 import { ProviderRegistry } from "./providers/index.js";
-import { createSearchImagesTool } from "./tools/search-images.js";
-import { createDownloadImageTool } from "./tools/download-image.js";
+import { createSearchImagesTool, type SearchImagesInput } from "./tools/search-images.js";
+import { createDownloadImageTool, type DownloadImageInput } from "./tools/download-image.js";
 
 const registry = new ProviderRegistry();
 const searchTool = createSearchImagesTool(registry);
@@ -51,9 +48,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   switch (name) {
     case "search_images":
-      return searchTool.handler(args as any);
+      return searchTool.handler(args as SearchImagesInput);
     case "download_image":
-      return downloadTool.handler(args as any);
+      return downloadTool.handler(args as DownloadImageInput);
     default:
       throw new Error(`Unknown tool: ${name}`);
   }

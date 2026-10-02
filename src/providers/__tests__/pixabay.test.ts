@@ -39,7 +39,7 @@ describe("PixabayProvider", () => {
     const provider = new PixabayProvider();
     await provider.search("test", 1);
 
-    const calledUrl = mockFetch.mock.calls[0][0];
+    const calledUrl = mockFetch.mock.calls[0]![0];
     expect(calledUrl).toContain("per_page=3");
   });
 
@@ -55,7 +55,7 @@ describe("PixabayProvider", () => {
     const provider = new PixabayProvider();
     await provider.search("test", 5, "landscape");
 
-    const calledUrl = mockFetch.mock.calls[0][0];
+    const calledUrl = mockFetch.mock.calls[0]![0];
     expect(calledUrl).toContain("orientation=horizontal");
   });
 });

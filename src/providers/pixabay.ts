@@ -12,11 +12,7 @@ export class PixabayProvider implements Provider {
     return !!this.apiKey && this.apiKey.length > 0;
   }
 
-  async search(
-    query: string,
-    count: number,
-    orientation?: string
-  ): Promise<StockImage[]> {
+  async search(query: string, count: number, orientation?: string): Promise<StockImage[]> {
     if (!this.isConfigured()) {
       throw new Error("Pixabay API key not configured");
     }
@@ -37,15 +33,13 @@ export class PixabayProvider implements Provider {
       params.set("orientation", "vertical");
     }
 
-    const response = await fetch(
-      `https://pixabay.com/api/?${params}`
-    );
+    const response = await fetch(`https://pixabay.com/api/?${params}`);
 
     if (!response.ok) {
       throw new Error(`Pixabay API error: ${response.status}`);
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       hits: Array<{
         id: number;
         largeImageURL: string;

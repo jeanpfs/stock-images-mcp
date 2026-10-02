@@ -20,14 +20,8 @@ const EXT_BY_TYPE: Record<string, string> = {
 
 export const downloadImageSchema = z.object({
   url: z.string().url().describe("URL of the image to download"),
-  filename: z
-    .string()
-    .optional()
-    .describe("Output filename (auto-generated if omitted)"),
-  folder: z
-    .string()
-    .optional()
-    .describe("Subfolder inside the download directory"),
+  filename: z.string().optional().describe("Output filename (auto-generated if omitted)"),
+  folder: z.string().optional().describe("Subfolder inside the download directory"),
 });
 
 export type DownloadImageInput = z.infer<typeof downloadImageSchema>;
@@ -125,7 +119,7 @@ async function download(input: DownloadImageInput) {
   if (!response.body) throw new Error("No response body");
 
   const contentType = (response.headers.get("content-type") || "")
-    .split(";")[0]
+    .split(";")[0]!
     .trim()
     .toLowerCase();
   const ext = EXT_BY_TYPE[contentType];
@@ -156,7 +150,7 @@ async function download(input: DownloadImageInput) {
     await pipeline(Readable.fromWeb(response.body as never), limiter, fileStream);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "EEXIST") {
-      throw new Error(`File already exists: ${filename}`);
+      throw new Error(`File already exists: ${filename}`, { cause: error });
     }
     fs.rmSync(filePath, { force: true });
     throw error;

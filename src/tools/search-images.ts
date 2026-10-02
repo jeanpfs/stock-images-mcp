@@ -87,10 +87,7 @@ export function createSearchImagesTool(registry: ProviderRegistry) {
           ...(errors.length > 0 ? { errors } : {}),
         });
       } catch (error) {
-        return reply(
-          { error: error instanceof Error ? error.message : "Search failed" },
-          true
-        );
+        return reply({ error: error instanceof Error ? error.message : "Search failed" }, true);
       }
     },
   };

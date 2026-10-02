@@ -7,11 +7,7 @@ export class ProviderRegistry {
   private providers: Provider[];
 
   constructor() {
-    this.providers = [
-      new PexelsProvider(),
-      new UnsplashProvider(),
-      new PixabayProvider(),
-    ];
+    this.providers = [new PexelsProvider(), new UnsplashProvider(), new PixabayProvider()];
   }
 
   getConfiguredProviders(): Provider[] {
@@ -53,22 +49,29 @@ export class ProviderRegistry {
       targetProviders = this.getConfiguredProviders();
     }
 
-    const results = await Promise.allSettled(
-      targetProviders.map((p) => p.search(query, count, orientation))
+    const results = await Promise.all(
+      targetProviders.map(
+        async (p): Promise<{ images: StockImage[] } | { error: ProviderError }> => {
+          try {
+            return { images: await p.search(query, count, orientation) };
+          } catch (error) {
+            return {
+              error: {
+                provider: p.name,
+                error: error instanceof Error ? error.message : String(error),
+              },
+            };
+          }
+        }
+      )
     );
 
     const images: StockImage[] = [];
     const errors: ProviderError[] = [];
-    results.forEach((r, i) => {
-      if (r.status === "fulfilled") {
-        images.push(...r.value);
-      } else {
-        errors.push({
-          provider: targetProviders[i].name,
-          error: r.reason instanceof Error ? r.reason.message : String(r.reason),
-        });
-      }
-    });
+    for (const r of results) {
+      if ("images" in r) images.push(...r.images);
+      else errors.push(r.error);
+    }
     return { images, errors };
   }
 }

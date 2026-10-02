@@ -21,7 +21,7 @@ function mockFetch(routes: Record<string, () => Response>) {
     const url = String(input);
     const key = Object.keys(routes).find((k) => url.includes(k));
     if (!key) throw new Error(`unexpected fetch ${url}`);
-    return routes[key]();
+    return routes[key]!();
   });
 }
 
@@ -39,7 +39,7 @@ describe("search_images", () => {
   const call = async (input: object) => {
     const tool = createSearchImagesTool(new ProviderRegistry());
     const res = await tool.handler(input as never);
-    return { res, body: JSON.parse(res.content[0].text) };
+    return { res, body: JSON.parse(res.content[0]!.text) };
   };
 
   it("reports partial failures next to successful results", async () => {
@@ -53,9 +53,7 @@ describe("search_images", () => {
     const { res, body } = await call({ query: "cat" });
     expect(res.isError).toBeUndefined();
     expect(body.count).toBe(1);
-    expect(body.errors).toEqual([
-      { provider: "unsplash", error: "Unsplash API error: 403" },
-    ]);
+    expect(body.errors).toEqual([{ provider: "unsplash", error: "Unsplash API error: 403" }]);
   });
 
   it("flags isError when every provider fails", async () => {
@@ -88,7 +86,7 @@ describe("search_images", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     await call({ query: "cat", provider: "unsplash", orientation: "square" });
-    expect(String(fetchMock.mock.calls[0][0])).toContain("orientation=squarish");
+    expect(String(fetchMock.mock.calls[0]![0])).toContain("orientation=squarish");
   });
 
   it("filters Pixabay results client-side for square", async () => {
