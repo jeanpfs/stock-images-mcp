@@ -62,53 +62,35 @@ export function createSearchImagesTool(registry: ProviderRegistry) {
       required: ["query"],
     },
     handler: async (input: SearchImagesInput) => {
-      const validated = searchImagesSchema.parse(input);
-
-      if (!registry.hasAnyConfigured()) {
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify({
-                error:
-                  "No API keys configured. Set at least one: PEXELS_API_KEY, UNSPLASH_API_KEY, or PIXABAY_API_KEY",
-              }),
-            },
-          ],
-        };
-      }
+      const reply = (payload: unknown, isError = false) => ({
+        content: [{ type: "text" as const, text: JSON.stringify(payload) }],
+        ...(isError ? { isError: true } : {}),
+      });
 
       try {
-        const images = await registry.search(
+        const validated = searchImagesSchema.parse(input);
+        const { images, errors } = await registry.search(
           validated.query,
           validated.count,
           validated.orientation,
           validated.provider
         );
 
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify({
-                images,
-                count: images.length,
-                providers: [...new Set(images.map((i) => i.provider))],
-              }),
-            },
-          ],
-        };
+        if (images.length === 0 && errors.length > 0) {
+          return reply({ error: "All providers failed", errors }, true);
+        }
+
+        return reply({
+          images,
+          count: images.length,
+          providers: [...new Set(images.map((i) => i.provider))],
+          ...(errors.length > 0 ? { errors } : {}),
+        });
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify({
-                error: error instanceof Error ? error.message : "Search failed",
-              }),
-            },
-          ],
-        };
+        return reply(
+          { error: error instanceof Error ? error.message : "Search failed" },
+          true
+        );
       }
     },
   };

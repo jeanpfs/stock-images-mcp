@@ -27,7 +27,7 @@ export class UnsplashProvider implements Provider {
     });
 
     if (orientation) {
-      params.set("orientation", orientation);
+      params.set("orientation", orientation === "square" ? "squarish" : orientation);
     }
 
     const response = await fetch(
@@ -51,7 +51,7 @@ export class UnsplashProvider implements Provider {
         user: { name: string; links: { html: string } };
         width: number;
         height: number;
-        links: { download: string };
+        links: { download_location: string };
       }>;
     };
 
@@ -63,7 +63,7 @@ export class UnsplashProvider implements Provider {
       description: photo.alt_description || "",
       author: photo.user.name,
       authorUrl: photo.user.links.html,
-      downloadUrl: photo.links.download,
+      downloadUrl: photo.links.download_location,
       width: photo.width,
       height: photo.height,
     }));

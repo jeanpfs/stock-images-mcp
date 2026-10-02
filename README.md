@@ -60,12 +60,22 @@ Search for stock images across configured providers.
 
 ### download_image
 
-Download an image to local folder.
+Download an image into the download directory.
 
 **Parameters:**
-- `url` (required): Image URL
-- `filename`: Output filename (auto-generated if omitted)
-- `folder`: Destination folder (default: "./downloads")
+- `url` (required): `https` image URL on `pexels.com`, `unsplash.com` or `pixabay.com` (pass `downloadUrl` from `search_images`)
+- `filename`: Output filename — letters, digits, `_`, `-`, `.` only; extension added from the content-type if missing (auto-generated if omitted)
+- `folder`: Subfolder inside the download directory
+
+**Behavior and limits:**
+- Download directory is `./downloads`, or `STOCK_IMAGES_DOWNLOAD_DIR` if set. Paths that escape it (including via symlinks) are rejected.
+- Only `image/*` responses are saved; max 50 MiB; 30 s timeout; redirects are followed only to allowed hosts.
+- Existing files are never overwritten.
+- Unsplash downloads require `UNSPLASH_API_KEY`: the tool calls Unsplash's download endpoint, as their API guidelines require.
+
+### Errors
+
+Failures return `isError: true`. `search_images` also returns per-provider `errors` when some providers fail but others succeed.
 
 ## License
 

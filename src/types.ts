@@ -1,48 +1,31 @@
+export type ProviderName = "pexels" | "unsplash" | "pixabay";
+
 export interface StockImage {
   id: string;
-  provider: "pexels" | "unsplash" | "pixabay";
+  provider: ProviderName;
   url: string;
   thumbnail: string;
   description: string;
   author: string;
   authorUrl: string;
+  /** URL to pass to `download_image`. For Unsplash this is the tracking endpoint. */
   downloadUrl: string;
   width: number;
   height: number;
 }
 
-export interface SearchParams {
-  query: string;
-  provider?: "pexels" | "unsplash" | "pixabay" | "all";
-  count?: number;
-  orientation?: "landscape" | "portrait" | "square";
+export interface ProviderError {
+  provider: ProviderName;
+  error: string;
 }
 
-export interface SearchResult {
+export interface SearchOutcome {
   images: StockImage[];
-  providers: string[];
-}
-
-export interface DownloadParams {
-  url: string;
-  filename?: string;
-  folder?: string;
-}
-
-export interface DownloadResult {
-  success: boolean;
-  path: string;
-  size: number;
-}
-
-export interface ProviderConfig {
-  name: string;
-  isConfigured: boolean;
-  apiKey?: string;
+  errors: ProviderError[];
 }
 
 export interface Provider {
-  name: "pexels" | "unsplash" | "pixabay";
+  name: ProviderName;
   isConfigured(): boolean;
   search(query: string, count: number, orientation?: string): Promise<StockImage[]>;
 }

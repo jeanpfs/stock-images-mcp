@@ -21,10 +21,13 @@ export class PixabayProvider implements Provider {
       throw new Error("Pixabay API key not configured");
     }
 
+    const squareOnly = orientation === "square";
+    // Pixabay has no square filter: over-fetch, then filter client-side.
+    const perPage = squareOnly ? count * 5 : count;
     const params = new URLSearchParams({
       key: this.apiKey!,
       q: query,
-      per_page: String(Math.max(3, Math.min(count, 200))),
+      per_page: String(Math.max(3, Math.min(perPage, 200))),
       image_type: "photo",
     });
 
@@ -55,17 +58,22 @@ export class PixabayProvider implements Provider {
       }>;
     };
 
-    return data.hits.map((photo) => ({
+    const images = data.hits.map((photo) => ({
       id: String(photo.id),
       provider: "pixabay" as const,
       url: photo.largeImageURL,
       thumbnail: photo.previewURL,
       description: photo.tags,
       author: photo.user,
-      authorUrl: `https://pixabay.com/users/${photo.user}`,
+      authorUrl: `https://pixabay.com/users/${encodeURIComponent(photo.user)}`,
       downloadUrl: photo.largeImageURL,
       width: photo.imageWidth,
       height: photo.imageHeight,
     }));
+
+    if (!squareOnly) return images;
+    return images
+      .filter((i) => Math.abs(i.width - i.height) <= Math.max(i.width, i.height) * 0.1)
+      .slice(0, count);
   }
 }
