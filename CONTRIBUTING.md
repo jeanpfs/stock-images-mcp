@@ -13,4 +13,5 @@ npm run lint && npm run format:check && npm run typecheck && npm test && npm run
 
 1. Update `CHANGELOG.md` and bump `version` in `package.json`, and `version` fields in `server.json`.
 2. Commit, then tag: `git tag vX.Y.Z && git push --tags`.
-3. The `Release` workflow verifies the tag against `package.json` and publishes to npm with provenance (requires the `NPM_TOKEN` repository secret).
+3. The `Release` workflow verifies the tag against `package.json` and stages the release with `npm stage publish`. `NPM_TOKEN` must be a granular token with _Read and write (stage only)_.
+4. Approve it with 2FA: `npm stage list`, then `npm stage approve <stage-id>` (or on npmjs.com).
