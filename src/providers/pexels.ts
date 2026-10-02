@@ -1,3 +1,4 @@
+import { fetchProviderJson } from "../http.js";
 import type { Provider, StockImage } from "../types.js";
 
 export class PexelsProvider implements Provider {
@@ -26,17 +27,7 @@ export class PexelsProvider implements Provider {
       params.set("orientation", orientation);
     }
 
-    const response = await fetch(`https://api.pexels.com/v1/search?${params}`, {
-      headers: {
-        Authorization: this.apiKey!,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Pexels API error: ${response.status}`);
-    }
-
-    const data = (await response.json()) as {
+    const data = await fetchProviderJson<{
       photos: Array<{
         id: number;
         src: { original: string; medium: string };
@@ -46,7 +37,11 @@ export class PexelsProvider implements Provider {
         width: number;
         height: number;
       }>;
-    };
+    }>("Pexels", `https://api.pexels.com/v1/search?${params}`, {
+      headers: {
+        Authorization: this.apiKey!,
+      },
+    });
 
     return data.photos.map((photo) => ({
       id: String(photo.id),

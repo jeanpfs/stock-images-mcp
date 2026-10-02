@@ -1,3 +1,4 @@
+import { fetchProviderJson } from "../http.js";
 import type { Provider, StockImage } from "../types.js";
 
 export class UnsplashProvider implements Provider {
@@ -26,17 +27,7 @@ export class UnsplashProvider implements Provider {
       params.set("orientation", orientation === "square" ? "squarish" : orientation);
     }
 
-    const response = await fetch(`https://api.unsplash.com/search/photos?${params}`, {
-      headers: {
-        Authorization: `Client-ID ${this.apiKey}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Unsplash API error: ${response.status}`);
-    }
-
-    const data = (await response.json()) as {
+    const data = await fetchProviderJson<{
       results: Array<{
         id: string;
         urls: { raw: string; small: string };
@@ -46,7 +37,11 @@ export class UnsplashProvider implements Provider {
         height: number;
         links: { download_location: string };
       }>;
-    };
+    }>("Unsplash", `https://api.unsplash.com/search/photos?${params}`, {
+      headers: {
+        Authorization: `Client-ID ${this.apiKey}`,
+      },
+    });
 
     return data.results.map((photo) => ({
       id: photo.id,

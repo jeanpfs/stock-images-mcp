@@ -18,13 +18,15 @@ const EXT_BY_TYPE: Record<string, string> = {
   "image/avif": ".avif",
 };
 
-export const downloadImageSchema = z.object({
+export const downloadImageShape = {
   url: z.string().url().describe("URL of the image to download"),
   filename: z.string().optional().describe("Output filename (auto-generated if omitted)"),
   folder: z.string().optional().describe("Subfolder inside the download directory"),
-});
+};
 
-export type DownloadImageInput = z.infer<typeof downloadImageSchema>;
+export const downloadImageSchema = z.object(downloadImageShape);
+
+export type DownloadImageInput = z.input<typeof downloadImageSchema>;
 
 /** Only https URLs on the three provider domains (or their subdomains) are allowed. */
 export function assertAllowedUrl(raw: string): URL {
@@ -164,24 +166,7 @@ export function createDownloadImageTool() {
     name: "download_image",
     description:
       "Download a stock image (https URL on pexels.com, unsplash.com or pixabay.com) into the download directory. Refuses to overwrite existing files.",
-    inputSchema: {
-      type: "object" as const,
-      properties: {
-        url: {
-          type: "string",
-          description: "URL of the image to download",
-        },
-        filename: {
-          type: "string",
-          description: "Output filename (auto-generated if omitted)",
-        },
-        folder: {
-          type: "string",
-          description: "Subfolder inside the download directory",
-        },
-      },
-      required: ["url"],
-    },
+    inputSchema: downloadImageShape,
     handler: async (input: DownloadImageInput) => {
       try {
         const result = await download(downloadImageSchema.parse(input));
