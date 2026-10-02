@@ -2,6 +2,7 @@
   "name": "stock-images-mcp",
   "version": "1.0.0",
   "description": "MCP server to search and download stock images from Pexels, Unsplash, and Pixabay",
+  "mcpName": "io.github.jeanpfs/stock-images-mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeanpfs/stock-images-mcp.git"
@@ -24,7 +25,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run lint && npm test && npm run build"
   },
   "keywords": [
     "mcp",
@@ -34,6 +36,7 @@
     "pixabay"
   ],
   "license": "MIT",
+  "author": "Jean Pierre <jean.pfs2@gmail.com>",
   "engines": {
     "node": ">=20"
   },
@@ -50,5 +53,16 @@
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.71.0",
     "vitest": "^2.1.0"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
