@@ -3,7 +3,7 @@
   "name": "io.github.jeanpfs/stock-images-mcp",
   "title": "Stock Images MCP",
   "description": "Search and download free stock images from Pexels, Unsplash, and Pixabay.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "url": "https://github.com/jeanpfs/stock-images-mcp",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "stock-images-mcp",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "transport": { "type": "stdio" },
       "environmentVariables": [
         {
