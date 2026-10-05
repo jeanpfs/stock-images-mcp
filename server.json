@@ -1,0 +1,41 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.jeanpfs/stock-images-mcp",
+  "title": "Stock Images MCP",
+  "description": "Search and download free stock images from Pexels, Unsplash, and Pixabay.",
+  "version": "2.0.0",
+  "repository": {
+    "url": "https://github.com/jeanpfs/stock-images-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "stock-images-mcp",
+      "version": "2.0.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "PEXELS_API_KEY",
+          "description": "API key from pexels.com/api (free). At least one provider key is required.",
+          "isSecret": true
+        },
+        {
+          "name": "UNSPLASH_API_KEY",
+          "description": "Access key from unsplash.com/developers (free). Required to download Unsplash photos.",
+          "isSecret": true
+        },
+        {
+          "name": "PIXABAY_API_KEY",
+          "description": "API key from pixabay.com/api/docs (free).",
+          "isSecret": true
+        },
+        {
+          "name": "STOCK_IMAGES_DOWNLOAD_DIR",
+          "description": "Directory where download_image saves files (default: ./downloads).",
+          "isRequired": false
+        }
+      ]
+    }
+  ]
+}

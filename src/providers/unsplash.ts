@@ -1,3 +1,4 @@
+import { fetchProviderJson } from "../http.js";
 import type { Provider, StockImage } from "../types.js";
 
 export class UnsplashProvider implements Provider {
@@ -12,11 +13,7 @@ export class UnsplashProvider implements Provider {
     return !!this.apiKey && this.apiKey.length > 0;
   }
 
-  async search(
-    query: string,
-    count: number,
-    orientation?: string
-  ): Promise<StockImage[]> {
+  async search(query: string, count: number, orientation?: string): Promise<StockImage[]> {
     if (!this.isConfigured()) {
       throw new Error("Unsplash API key not configured");
     }
@@ -27,23 +24,10 @@ export class UnsplashProvider implements Provider {
     });
 
     if (orientation) {
-      params.set("orientation", orientation);
+      params.set("orientation", orientation === "square" ? "squarish" : orientation);
     }
 
-    const response = await fetch(
-      `https://api.unsplash.com/search/photos?${params}`,
-      {
-        headers: {
-          Authorization: `Client-ID ${this.apiKey}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Unsplash API error: ${response.status}`);
-    }
-
-    const data = (await response.json()) as {
+    const data = await fetchProviderJson<{
       results: Array<{
         id: string;
         urls: { raw: string; small: string };
@@ -51,9 +35,13 @@ export class UnsplashProvider implements Provider {
         user: { name: string; links: { html: string } };
         width: number;
         height: number;
-        links: { download: string };
+        links: { download_location: string };
       }>;
-    };
+    }>("Unsplash", `https://api.unsplash.com/search/photos?${params}`, {
+      headers: {
+        Authorization: `Client-ID ${this.apiKey}`,
+      },
+    });
 
     return data.results.map((photo) => ({
       id: photo.id,
@@ -63,7 +51,7 @@ export class UnsplashProvider implements Provider {
       description: photo.alt_description || "",
       author: photo.user.name,
       authorUrl: photo.user.links.html,
-      downloadUrl: photo.links.download,
+      downloadUrl: photo.links.download_location,
       width: photo.width,
       height: photo.height,
     }));
