@@ -7,6 +7,16 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # typescript-eslint does not support TypeScript 7 yet (peer range <6.1.0).
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      # Keep types aligned with the minimum supported Node (engines.node).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # Vitest 5 requires Node >=22.12; this package still supports Node 20.
+      - dependency-name: vitest
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
