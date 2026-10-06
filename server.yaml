@@ -10,7 +10,7 @@ tags:
 
 about:
   title: Stock Images MCP
-  description: Search and download free stock images from Pexels, Unsplash, and Pixabay. Requires at least one API key configured.
+  description: Search and download free stock images from Pexels, Unsplash, and Pixabay. Requires at least one API key configured. Optional STOCK_IMAGES_DOWNLOAD_DIR sets where images are saved (default ./downloads).
 
 source:
   url: https://github.com/jeanpfs/stock-images-mcp
