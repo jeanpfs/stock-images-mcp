@@ -1,0 +1,28 @@
+name: stock-images-mcp
+type: stdio
+category: media
+tags:
+  - images
+  - stock
+  - pexels
+  - unsplash
+  - pixabay
+
+about:
+  title: Stock Images MCP
+  description: Search and download free stock images from Pexels, Unsplash, and Pixabay. Requires at least one API key configured.
+
+source:
+  url: https://github.com/jeanpfs/stock-images-mcp
+
+config:
+  secrets:
+    - name: PEXELS_API_KEY
+      description: "API key from pexels.com/api (free)"
+      required: false
+    - name: UNSPLASH_API_KEY
+      description: "API key from unsplash.com/developers (free)"
+      required: false
+    - name: PIXABAY_API_KEY
+      description: "API key from pixabay.com/api/docs (free)"
+      required: false
