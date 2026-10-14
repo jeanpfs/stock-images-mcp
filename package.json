@@ -1,5 +1,5 @@
 {
-  "name": "stock-images-mcp",
+  "name": "@jean.pierre/stock-images-mcp",
   "version": "2.0.0",
   "description": "MCP server to search and download stock images from Pexels, Unsplash, and Pixabay",
   "mcpName": "io.github.jeanpfs/stock-images-mcp",
@@ -36,7 +36,7 @@
     "pixabay"
   ],
   "license": "MIT",
-  "author": "Jean Pierre <jean.pfs2@gmail.com>",
+  "author": "jean.pierre <jean.pfs2@gmail.com>",
   "engines": {
     "node": ">=20"
   },

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- The package moved to the `@jean.pierre` npm scope: install and run it as `@jean.pierre/stock-images-mcp` (`npx -y @jean.pierre/stock-images-mcp`). The CLI command name is unchanged. The old unscoped `stock-images-mcp` package is deprecated.
+
 ## 2.0.0 - 2026-10-02
 
 ### Breaking

@@ -1,8 +1,8 @@
 # Stock Images MCP
 
 [![CI](https://github.com/jeanpfs/stock-images-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/jeanpfs/stock-images-mcp/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/stock-images-mcp)](https://www.npmjs.com/package/stock-images-mcp)
-[![license](https://img.shields.io/npm/l/stock-images-mcp)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@jean.pierre/stock-images-mcp)](https://www.npmjs.com/package/@jean.pierre/stock-images-mcp)
+[![license](https://img.shields.io/npm/l/@jean.pierre/stock-images-mcp)](LICENSE)
 
 <a href="https://glama.ai/mcp/servers/@jeanpfs/stock-images-mcp">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@jeanpfs/stock-images-mcp/badge" />
@@ -36,7 +36,7 @@ Add to your MCP config (`~/.claude/mcp.json`, `~/.cursor/mcp.json`, or `claude_d
   "mcpServers": {
     "stock-images": {
       "command": "npx",
-      "args": ["-y", "stock-images-mcp"],
+      "args": ["-y", "@jean.pierre/stock-images-mcp"],
       "env": {
         "PEXELS_API_KEY": "your-key-here",
         "UNSPLASH_API_KEY": "your-key-here",
