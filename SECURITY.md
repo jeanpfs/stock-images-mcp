@@ -6,6 +6,10 @@ Please report vulnerabilities privately through
 [GitHub Security Advisories](https://github.com/jeanpfs/stock-images-mcp/security/advisories/new).
 Do not open a public issue. Expect an initial response within 7 days.
 
+## Supported versions
+
+Only the latest published release (currently 2.x) receives security fixes.
+
 ## Scope and design notes
 
 - `download_image` only fetches `https` URLs on `pexels.com`, `unsplash.com` and `pixabay.com`

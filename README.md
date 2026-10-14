@@ -112,7 +112,7 @@ npm ci
 npm run lint && npm run format:check && npm run typecheck && npm test
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and [SECURITY.md](SECURITY.md) (report vulnerabilities privately, not in public issues).
 
 ## License
 

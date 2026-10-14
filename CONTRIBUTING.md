@@ -1,5 +1,7 @@
 # Contributing
 
+By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md). Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
 ```bash
 npm ci
 npm run lint && npm run format:check && npm run typecheck && npm test && npm run build
