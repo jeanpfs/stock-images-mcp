@@ -47,7 +47,7 @@ Add to your MCP config (`~/.claude/mcp.json`, `~/.cursor/mcp.json`, or `claude_d
 }
 ```
 
-Requires Node.js 20+.
+Requires Node.js 22+.
 
 ### Docker
 
