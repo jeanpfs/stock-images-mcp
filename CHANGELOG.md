@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Docs
+
+- README demo GIF: a real Claude Code session searching and downloading a photo, with the scripts that record it in `scripts/demo/`.
+
 ## 2.0.1 - 2026-10-16
 
 ### Changed

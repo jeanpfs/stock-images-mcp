@@ -8,6 +8,10 @@
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@jeanpfs/stock-images-mcp/badge" />
 </a>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jeanpfs/stock-images-mcp/main/assets/demo.gif" alt="Claude Code searching three stock photo providers and downloading the best match with its credit" width="900">
+</p>
+
 An MCP (Model Context Protocol) server for searching and downloading stock images from Pexels, Unsplash, and Pixabay.
 
 ## Features
