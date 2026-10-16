@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.1 - 2026-10-16
+
+### Changed
+
+- Dependencies: `zod` 3.25 to 4.6 (tool input schemas are unchanged; no change to the tool interface).
+- Docker base image: `node:22-alpine` to `node:26-alpine`.
+- Dependabot configuration added (major bumps blocked by Node 20 support and typescript-eslint are ignored).
+- The release workflow now creates the GitHub release from this changelog.
+
 ## 2.0.0 - 2026-10-02
 
 ### Breaking

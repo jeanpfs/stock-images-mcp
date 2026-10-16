@@ -20,14 +20,43 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Tag must match package.json version
         run: |
-          test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
+          v="$(node -p "require('./package.json').version")"
+          [ "v$v" = "${GITHUB_REF_NAME}" ] || { echo "tag ${GITHUB_REF_NAME} != package version v$v"; exit 1; }
+          s="$(node -p "const s=require('./server.json');[s.version,...s.packages.map(p=>p.version)].join(' ')")"
+          for x in $s; do [ "$x" = "$v" ] || { echo "server.json version $x != $v"; exit 1; }; done
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run build --if-present
       - name: Stage release (a maintainer approves it with 2FA)
         run: |
           npm install -g npm@latest
           npm stage publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: GitHub release from CHANGELOG
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          export V="${tag#v}"
+          awk '/^## /{f=(index($0,"## ["ENVIRON["V"]"]")==1||index($0,"## "ENVIRON["V"]" ")==1);next} f' CHANGELOG.md > notes.md
+          if [ -s notes.md ]; then
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release edit "$tag" --title "$tag" --notes-file notes.md
+            else
+              gh release create "$tag" --title "$tag" --notes-file notes.md
+            fi
+          else
+            echo "no CHANGELOG section for $V, falling back to generated notes"
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --generate-notes
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
