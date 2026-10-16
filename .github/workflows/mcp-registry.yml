@@ -1,0 +1,24 @@
+name: MCP Registry
+
+# Run manually once the npm release of the version in server.json is live
+# (npm stage publish is approved by a maintainer, so it can lag the tag).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # GitHub OIDC login for io.github.jeanpfs/*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: npm package must be live
+        run: |
+          v="$(node -p "require('./server.json').version")"
+          [ "$(npm view stock-images-mcp@"$v" version)" = "$v" ] || { echo "stock-images-mcp@$v is not on npm yet"; exit 1; }
+      - name: Install mcp-publisher
+        run: curl -fsSL https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz | tar xz mcp-publisher
+      - run: ./mcp-publisher login github-oidc
+      - run: ./mcp-publisher publish
