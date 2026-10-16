@@ -5,7 +5,8 @@
 ### Changed
 
 - Dependencies: `zod` 3.25 to 4.6 (tool input schemas are unchanged; no change to the tool interface).
-- Docker base image: `node:22-alpine` to `node:26-alpine`.
+- Docker base image: `node:22-alpine` to `node:24-alpine` (Node 24 LTS); `engines.node` is `>=22` and CI tests Node 22 and 24.
+- Development dependencies: `vitest` 4.1.11 (clears Dependabot alerts).
 - Dependabot configuration added (major bumps blocked by Node 20 support and typescript-eslint are ignored).
 - The release workflow now creates the GitHub release from this changelog.
 
